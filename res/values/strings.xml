@@ -5,5 +5,12 @@
     <string name="action_menu_add">Add New Contact</string>
     <string name="action_menu_edit">Edit Contact</string>
     <string name="action_menu_delete">Delete Contact</string>
+    <string name="fragment_detail_address">Address</string>
+    <string name="fragment_detail_hint_name">Enter the name</string>
+    <string name="fragment_detail_hint_phone">Enter the phone number</string>
+    <string name="fragment_detail_hint_email">Enter the email address</string>
+    <string name="fragment_detail_hint_address">Enter the street address </string>
+    <string name="fragment_detail_hint_city">Enter the city</string>
+    <string name="fragment_detail_button_save">Save Contact</string>
 
 </resources>
