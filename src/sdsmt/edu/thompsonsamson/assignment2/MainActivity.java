@@ -67,7 +67,7 @@ public class MainActivity extends Activity implements IContactControlListener {
 	@Override
 	public void selectContact(Contact contact) {
 
-		Log.d("Assignment2","Select Contact: " + contact.Name);
+		Log.d("Assignment2","Select Contact: " + contact.Name + "(" + contact.ID + ")");
 		
 		_contact = contact;
 		showDetailFragment();

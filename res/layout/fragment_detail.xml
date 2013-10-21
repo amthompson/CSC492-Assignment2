@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:imeOptions="actionNext"
-        android:inputType="textCapCharacters"
+        android:inputType="textCapWords"
         android:hint="@string/fragment_detail_hint_city"
         style="@style/ContactEditTextView"
         android:ems="10" />

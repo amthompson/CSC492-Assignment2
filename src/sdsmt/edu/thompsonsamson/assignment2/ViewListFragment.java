@@ -4,6 +4,7 @@ import sdsmt.edu.thompsonsamson.assignment2.Model.Contact;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -81,6 +82,9 @@ public class ViewListFragment extends ListFragment {
 		
 		contact = (Contact) getListAdapter().getItem(position);
 
+		
+		Log.d("Assignment2","List item clicked: " + contact.Name + "(" + contact.ID + ")");
+		
 		if(contact != null)
 		{			
 			_listener.selectContact(contact);
