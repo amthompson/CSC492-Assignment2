@@ -47,20 +47,31 @@ public class Model extends SQLiteOpenHelper {
     {
 
     	public long ID;
-    	public String Name = "";
-    	public String Phone = "";
-    	public String Email = "";
-    	public String Address = "";
-    	public String City = "";
+    	public String Name;
+    	public String Phone;
+    	public String Email;
+    	public String Address;
+    	public String City;
     	
     	public Contact()
     	{
     		ID = -1;
+    		Name = "";
+    		Phone = "";
+    		Email = "";
+    		Address = "";
+    		City = "";
     	}
     	
     	public Contact( long id)
     	{
     		ID = id;
+    	}
+    	
+    	@Override
+    	public String toString()
+    	{
+    		return Name;
     	}
     	
 		@Override
@@ -143,7 +154,8 @@ public class Model extends SQLiteOpenHelper {
 		// open database
 		openDbConnection();
 
-		int rowsAffected = _db.delete(TABLE_CONTACTS, KEY_ID + " = ?", new String[] {String.valueOf(contact.ID)});
+		int rowsAffected = _db.delete(TABLE_CONTACTS, KEY_ID + " = ?", 
+									  new String[] {String.valueOf(contact.ID)});
 		
 		// close database
 		closeDbConnection();
@@ -163,9 +175,8 @@ public class Model extends SQLiteOpenHelper {
 		
 		Cursor cursor = _db.query(TABLE_CONTACTS, 
 								  new String[] { KEY_ID, KEY_NAME, KEY_PHONE, KEY_EMAIL, KEY_ADDRESS, KEY_CITY },
-								  null, null, null, null,
-								  KEY_NAME
-								 );
+								  KEY_ID + " = " + id, null, null, null,
+								  KEY_NAME);
 
 		if( cursor.moveToFirst() )
 		{

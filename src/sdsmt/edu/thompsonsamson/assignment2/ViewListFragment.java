@@ -64,7 +64,7 @@ public class ViewListFragment extends ListFragment {
 		{
 			case R.id.action_menu_add:
 			{
-				_listener.insertContact();
+				_listener.insertContact();				
 			}
 			default:
 			{
@@ -82,7 +82,7 @@ public class ViewListFragment extends ListFragment {
 		contact = (Contact) getListAdapter().getItem(position);
 
 		if(contact != null)
-		{
+		{			
 			_listener.selectContact(contact);
 		}
 		

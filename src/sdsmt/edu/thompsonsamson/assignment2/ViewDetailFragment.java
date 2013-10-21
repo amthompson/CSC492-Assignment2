@@ -4,6 +4,7 @@ import sdsmt.edu.thompsonsamson.assignment2.Model.Contact;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,8 +31,7 @@ public class ViewDetailFragment extends Fragment {
 		
 		setRetainInstance(true);
 		setHasOptionsMenu(true);
-		
-		
+				
 		displayContact();
 	}
 
@@ -42,14 +42,25 @@ public class ViewDetailFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 		
 		// assign instances of views from layout resource
-
+		_fieldName = (EditText) rootView.findViewById(R.id.editTextName);
+		_fieldPhone = (EditText) rootView.findViewById(R.id.editTextPhone);
+		_fieldEmail = (EditText) rootView.findViewById(R.id.editTextEmail);
+		_fieldAddress = (EditText) rootView.findViewById(R.id.editTextAddress);
+		_fieldCity = (EditText) rootView.findViewById(R.id.editTextCity);
+		
 		Button buttonSave = (Button) rootView.findViewById(R.id.buttonSave);
 		buttonSave.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v)
 			{
-								
-				// do something when button is clicked -- depends if adding or updating
+				// get current values of text fields
+				_contact.Name = _fieldName.getText().toString();
+				_contact.Phone = _fieldPhone.getText().toString();
+				_contact.Email = _fieldEmail.getText().toString();
+				_contact.Address = _fieldAddress.getText().toString();
+				_contact.City = _fieldCity.getText().toString();
+				
+				// do something when button is clicked
 				if(_contact.ID > 0)
 				{
 					_listener.updateContact(_contact);	
@@ -123,8 +134,7 @@ public class ViewDetailFragment extends Fragment {
 		
 	}
 
-	private void displayContact() 
-	{
+	private void displayContact() {
 		
 		// display the contact
 		_contact = _listener.getContact();
@@ -137,15 +147,6 @@ public class ViewDetailFragment extends Fragment {
 			_fieldAddress.setText(_contact.Address);
 			_fieldCity.setText(_contact.City);
 		}
-		else
-		{
-			_fieldName.setText("");
-			_fieldPhone.setText("");
-			_fieldEmail.setText("");
-			_fieldAddress.setText("");
-			_fieldCity.setText("");
-		}
-		
 	}
 
 }

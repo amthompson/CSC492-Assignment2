@@ -14,17 +14,17 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements IContactControlListener {
 
-	private Model _model;
-	private Contact _contact;
-	private List<Contact> _contacts;
-	private ArrayAdapter<Contact> _adapter;
-	
+	private final static String FRAGMENT_LIST_TAG = "ContactListTag";
+	private final static String FRAGMENT_DETAIL_TAG = "ContatViewTag";
+
 	private FragmentManager _fragmentManager;
 	private ViewListFragment _fragmentList;
 	private ViewDetailFragment _fragmentDetail;
 	
-	private final static String FRAGMENT_LIST_TAG = "ContactListTag";
-	private final static String FRAGMENT_DETAIL_TAG = "ContatViewTag";
+	private Model _model;
+	private Contact _contact;
+	private List<Contact> _contacts;
+	private ArrayAdapter<Contact> _adapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class MainActivity extends Activity implements IContactControlListener {
 			_fragmentList = new ViewListFragment();
 		}
 		
-		// get fragment view
+		// get fragment detail
 		_fragmentDetail = (ViewDetailFragment) _fragmentManager.findFragmentByTag(FRAGMENT_DETAIL_TAG);
 		if( _fragmentDetail == null )
 		{
@@ -66,6 +66,8 @@ public class MainActivity extends Activity implements IContactControlListener {
 
 	@Override
 	public void selectContact(Contact contact) {
+
+		Log.d("Assignment2","Select Contact: " + contact.Name);
 		
 		_contact = contact;
 		showDetailFragment();
@@ -74,6 +76,8 @@ public class MainActivity extends Activity implements IContactControlListener {
 
 	@Override
 	public void updateContact(Contact contact) {
+
+		Log.d("Assignment2","Update Contact: " + contact.Name);
 		
 		_adapter.remove(contact);
 		_adapter.add(contact);
@@ -87,6 +91,8 @@ public class MainActivity extends Activity implements IContactControlListener {
 
 	@Override
 	public void insertContact() {
+
+		Log.d("Assignment2","New Contact");
 		
 		// instantiate a new empty course object
 		_contact = new Contact();
@@ -97,6 +103,8 @@ public class MainActivity extends Activity implements IContactControlListener {
 
 	@Override
 	public void insertContact(Contact contact) {
+
+		Log.d("Assignment2","Insert Contact: " + contact.Name);
 		
 		_adapter.add(contact);
 		_adapter.sort(contact);
@@ -109,6 +117,8 @@ public class MainActivity extends Activity implements IContactControlListener {
 
 	@Override
 	public void deleteContact(Contact contact) {
+
+		Log.d("Assignment2","Delete Contact: " + contact.Name);
 		
 		_adapter.remove(contact);
 		_adapter.sort(contact);
@@ -121,6 +131,9 @@ public class MainActivity extends Activity implements IContactControlListener {
 
 	@Override
 	public Contact getContact() {
+
+		Log.d("Assignment2","Get Contact: " + _contact.Name);
+		
 		return _contact;
 	}
 
@@ -139,8 +152,8 @@ public class MainActivity extends Activity implements IContactControlListener {
 		
 	}
 
-	public void showDetailFragment()
-	{
+	public void showDetailFragment() {
+		
 		_fragmentManager.beginTransaction()
 						.replace(R.id.fragmentContainerFrame, _fragmentDetail, FRAGMENT_DETAIL_TAG)
 						.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
