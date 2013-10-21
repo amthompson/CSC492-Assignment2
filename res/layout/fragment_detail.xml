@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:imeOptions="actionNext"
-        android:inputType="textPostalAddress"
+        android:inputType="textCapWords|textPostalAddress"
         android:hint="@string/fragment_detail_hint_address"
         style="@style/ContactEditTextView"
         android:ems="10" />

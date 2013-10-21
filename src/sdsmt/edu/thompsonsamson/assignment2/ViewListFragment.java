@@ -83,7 +83,7 @@ public class ViewListFragment extends ListFragment {
 		contact = (Contact) getListAdapter().getItem(position);
 
 		
-		Log.d("Assignment2","List item clicked: " + contact.Name + "(" + contact.ID + ")");
+		Log.d("Assignment2",String.format("List item %d clicked: %s (%d)", position, contact.Name, contact.ID));
 		
 		if(contact != null)
 		{			

@@ -117,14 +117,20 @@ public class Model extends SQLiteOpenHelper {
 		
 		// insert the record
 		long id = _db.insertOrThrow(TABLE_CONTACTS, null, values);
-				
+		
 		// close database
 		closeDbConnection();
 
 		// check the id to make sure it was inserted
-		if( id == -1)
-		{
-			Log.d(TAG, "Contact not inserted!");
+		if( id > 0 ) {
+			
+			// update the contact with new id
+			contact.ID = id;
+
+			Log.d(TAG, String.format("Contact inserted: %s (%d)", contact.Name, id));
+		}
+		else {
+			Log.d(TAG, String.format("Contact NOT inserted: %s (%d)", contact.Name, contact.ID));
 		}
 	}
 	
@@ -142,9 +148,11 @@ public class Model extends SQLiteOpenHelper {
 		// close database
 		closeDbConnection();
 		
-		if( rowsAffected == 0 )
-		{
-			Log.d(TAG, "Contact not updated!");
+		if( rowsAffected == 0 ) {
+			Log.d(TAG, String.format("Contact NOT updated: %s (%d)", contact.Name, contact.ID));
+		}
+		else {
+			Log.d(TAG, String.format("Contact updated: %s (%d)", contact.Name, contact.ID));
 		}
 		
 	}
@@ -159,10 +167,12 @@ public class Model extends SQLiteOpenHelper {
 		
 		// close database
 		closeDbConnection();
-		
-		if( rowsAffected == 0)
-		{
-			Log.d(TAG, "Contact not deleted!");
+
+		if( rowsAffected == 0 ) {
+			Log.d(TAG, String.format("Contact NOT deleted: %s (%d)", contact.Name, contact.ID));
+		}
+		else {
+			Log.d(TAG, String.format("Contact deleted: %s (%d)", contact.Name, contact.ID));
 		}
 	}
 	
@@ -181,6 +191,8 @@ public class Model extends SQLiteOpenHelper {
 		if( cursor.moveToFirst() )
 		{
 			contact = cursorToContact(cursor);
+			
+			Log.d(TAG, String.format("Contact retrieved: %s (%d)", contact.Name, contact.ID));
 		}
 		
 		// close database cursor
@@ -242,6 +254,7 @@ public class Model extends SQLiteOpenHelper {
 	{
 		Contact contact = new Contact(cursor.getLong(cursor.getColumnIndex(KEY_ID)));
 		
+		contact.ID = cursor.getLong(cursor.getColumnIndex(KEY_ID));
 		contact.Name = cursor.getString(cursor.getColumnIndex(KEY_NAME));
 		contact.Phone = cursor.getString(cursor.getColumnIndex(KEY_PHONE));
 		contact.Email = cursor.getString(cursor.getColumnIndex(KEY_EMAIL));
@@ -254,7 +267,7 @@ public class Model extends SQLiteOpenHelper {
 	private ContentValues populateContentValues(Contact contact)
 	{
 		ContentValues values = new ContentValues();
-		
+				
 		values.put(KEY_NAME, contact.Name);
 		values.put(KEY_PHONE, contact.Phone);
 		values.put(KEY_EMAIL, contact.Email);

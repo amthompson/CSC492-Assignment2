@@ -8,9 +8,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.util.Log;
-import android.view.Menu;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 public class MainActivity extends Activity implements IContactControlListener {
 
