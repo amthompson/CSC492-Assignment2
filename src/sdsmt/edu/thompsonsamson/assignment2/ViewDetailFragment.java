@@ -17,6 +17,7 @@ public class ViewDetailFragment extends Fragment {
 
 	private IContactControlListener _listener;
 	private Contact _contact = null;
+    private boolean _isOrientationChanging = false;
 		
 	private EditText _fieldName;
 	private EditText _fieldPhone;
@@ -34,51 +35,18 @@ public class ViewDetailFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
-	{
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// inflate the fragment
 		View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
 		// assign instances of views from layout resource
 		configureUiObjects(rootView);
-				
+		
 		return rootView;
 	}
 
-	private void disableUiObjects() {
-
-		// disable by default
-		if( _fieldName != null ) {
-			_fieldName.setEnabled(false);
-			_fieldPhone.setEnabled(false);
-			_fieldEmail.setEnabled(false);
-			_fieldAddress.setEnabled(false);
-			_fieldCity.setEnabled(false);
-		}
-		
-		if( _buttonSave != null) {
-			_buttonSave.setVisibility(View.GONE);
-		}
-	}
-
-	private void enableUiObjects() {
-
-		// disable by default
-		if( _fieldName != null ) {
-			_fieldName.setEnabled(true);
-			_fieldPhone.setEnabled(true);
-			_fieldEmail.setEnabled(true);
-			_fieldAddress.setEnabled(true);
-			_fieldCity.setEnabled(true);
-		}
-
-		if( _buttonSave != null) {
-			_buttonSave.setVisibility(View.VISIBLE);
-		}
-	}
-
 	private void configureUiObjects(View v) {
-
+	
 		// assign the text fields
 		_fieldName = (EditText) v.findViewById(R.id.editTextName);
 		_fieldPhone = (EditText) v.findViewById(R.id.editTextPhone);
@@ -113,6 +81,38 @@ public class ViewDetailFragment extends Fragment {
 		});
 	}
 
+	private void disableUiObjects() {
+
+		// disable by default
+		if( _fieldName != null ) {
+			_fieldName.setEnabled(false);
+			_fieldPhone.setEnabled(false);
+			_fieldEmail.setEnabled(false);
+			_fieldAddress.setEnabled(false);
+			_fieldCity.setEnabled(false);
+		}
+		
+		if( _buttonSave != null) {
+			_buttonSave.setVisibility(View.GONE);
+		}
+	}
+
+	private void enableUiObjects() {
+
+		// disable by default
+		if( _fieldName != null ) {
+			_fieldName.setEnabled(true);
+			_fieldPhone.setEnabled(true);
+			_fieldEmail.setEnabled(true);
+			_fieldAddress.setEnabled(true);
+			_fieldCity.setEnabled(true);
+		}
+
+		if( _buttonSave != null) {
+			_buttonSave.setVisibility(View.VISIBLE);
+		}
+	}
+
 	@Override
 	public void onAttach(Activity activity) {
 		
@@ -133,10 +133,24 @@ public class ViewDetailFragment extends Fragment {
 	public void onResume() {
 		
 		super.onResume();
+
+		// display the contact
+		if( _isOrientationChanging == false )
+		{
+			_contact = _listener.getContact();
+		}
+		
 		
 		displayContact();
 	}
-
+	
+	@Override
+	public void onPause() {
+		_isOrientationChanging = getActivity().isChangingConfigurations();
+		
+		super.onPause();
+	}
+	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		
@@ -155,7 +169,7 @@ public class ViewDetailFragment extends Fragment {
 		{
 			case R.id.action_menu_edit:
 			{
-				// _listener.updateContact(_contact); -- removed
+				// if editing, enable the UI objects
 				enableUiObjects();
 				
 				return true;
@@ -174,12 +188,9 @@ public class ViewDetailFragment extends Fragment {
 	}
 
 	private void displayContact() {
-		
-		// display the contact
-		_contact = _listener.getContact();
-		
-		// blowing up here because objects don't exist on refresh (screen rotate)
-		
+				
+		// blowing up here because object don't exist on refresh (screen rotate)
+
 		if( _contact.ID > 0 )
 		{
 			// disable UI objects if viewing a contact
