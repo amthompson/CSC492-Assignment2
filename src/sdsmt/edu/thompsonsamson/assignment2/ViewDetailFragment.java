@@ -1,3 +1,8 @@
+/**
+ * 
+ * 
+ * @author Andrew Thompson & Scott Samson
+ */
 package sdsmt.edu.thompsonsamson.assignment2;
 
 import sdsmt.edu.thompsonsamson.assignment2.Model.Contact;
@@ -15,8 +20,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class ViewDetailFragment extends Fragment {
-
+public class ViewDetailFragment extends Fragment 
+{
+	
 	private IContactControlListener _listener;
 	private Contact _contact = null;
     private boolean _isOrientationChanging = false;
@@ -30,7 +36,8 @@ public class ViewDetailFragment extends Fragment {
 	private Button _buttonSave;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) 
+	{
 		super.onCreate(savedInstanceState);
 
 		_isEditMode = false;
@@ -40,8 +47,8 @@ public class ViewDetailFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
+	{	
 		// inflate the fragment
 		View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
@@ -55,8 +62,8 @@ public class ViewDetailFragment extends Fragment {
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		
+	public void onAttach(Activity activity) 
+	{	
 		// assign listener reference from host activity
 		try {
 			_listener = (IContactControlListener) activity;
@@ -69,11 +76,12 @@ public class ViewDetailFragment extends Fragment {
 	}
 
 	@Override
-	public void onResume() {
-		
+	public void onResume() 
+	{	
 		super.onResume();
 	
-		if( _isOrientationChanging == false ) {
+		if( _isOrientationChanging == false ) 
+		{
 			_contact = _listener.getContact();
 		}
 		
@@ -81,23 +89,25 @@ public class ViewDetailFragment extends Fragment {
 	}
 
 	@Override
-	public void onPause() {
+	public void onPause() 
+	{
 		_isOrientationChanging = getActivity().isChangingConfigurations();
 		super.onPause();
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
+	{
 		// get the menu resource if there is an actual contact being edited
-		if( _contact.ID > 0 ) {
+		if( _contact.ID > 0 ) 
+		{
 			getActivity().getMenuInflater().inflate(R.menu.menu_detail, menu);
 		}
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
 		// switch/case to find out what item was selected
 		switch(item.getItemId())
 		{
@@ -108,6 +118,9 @@ public class ViewDetailFragment extends Fragment {
 			}
 			case R.id.action_menu_delete:
 			{
+				
+				// add the confirmation message
+				
 				_listener.deleteContact(_contact);
 				return true;
 			}
@@ -116,11 +129,10 @@ public class ViewDetailFragment extends Fragment {
 				return super.onOptionsItemSelected(item);
 			}
 		}
-		
 	}
 
-	private void configureUiObjects(View v) {
-		
+	private void configureUiObjects(View v) 
+	{	
 		// assign the text fields
 		_fieldName = (EditText) v.findViewById(R.id.editTextName);
 		_fieldPhone = (EditText) v.findViewById(R.id.editTextPhone);
@@ -152,8 +164,7 @@ public class ViewDetailFragment extends Fragment {
 				else {
 					_listener.insertContact(_contact);
 				}
-			}
-			
+			}		
 		});
 	}
 
@@ -163,10 +174,10 @@ public class ViewDetailFragment extends Fragment {
 		inputManager.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 	}	
 	
-	private void checkEditMode() {
-		
+	private void checkEditMode() 
+	{	
 		// if editing, enable the UI objects, otherwise disable
-		if(  _isEditMode == true ) {
+		if( _isEditMode == true ) {
 			enableEditMode();
 		}
 		else {
@@ -174,7 +185,8 @@ public class ViewDetailFragment extends Fragment {
 		}
 	}
 	
-    private void disableEditMode() {
+    private void disableEditMode() 
+    {
 		_isEditMode = false;
 	    _fieldName.setEnabled(false);
 	    _fieldPhone.setEnabled(false);
@@ -184,7 +196,8 @@ public class ViewDetailFragment extends Fragment {
         _buttonSave.setVisibility(View.GONE);
     }
 
-    private void enableEditMode() {
+    private void enableEditMode() 
+    {
 		_isEditMode = true;
         _fieldName.setEnabled(true);
         _fieldPhone.setEnabled(true);
@@ -194,8 +207,8 @@ public class ViewDetailFragment extends Fragment {
         _buttonSave.setVisibility(View.VISIBLE);
     }
 	
-	private void displayContact() {
-		
+	private void displayContact() 
+	{	
 		if( _contact.ID > 0 ) {
 			_fieldName.setText(_contact.Name);
 			_fieldPhone.setText(_contact.Phone);
