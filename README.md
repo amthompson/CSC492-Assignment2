@@ -7,4 +7,4 @@ Mobile Development - Program 2<br>
 </p>
 
 <b>Address Book for Android.</b><br>
-This project uses fragments, SQLite database mode and an array adapter to create a list of contacts.
+This project uses fragments, SQLite database model and an array adapter to create a list of contacts.
