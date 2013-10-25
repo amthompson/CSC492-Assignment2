@@ -245,7 +245,7 @@ public class ViewDetailFragment extends Fragment
 		// yup - this is where contact is null when restoring from
 		// recent activities after pause and causing null exception. 
 		// Need to make sure we're getting the contact information 
-		// saved.
+		// saved. Maybe can clean up the enable/disable stuff
 		
 		if( _contact.ID > 0 ) {
 			_fieldName.setText(_contact.Name);
