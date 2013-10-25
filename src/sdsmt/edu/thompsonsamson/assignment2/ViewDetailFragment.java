@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,6 +50,8 @@ public class ViewDetailFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{	
+		Log.d("Assignment2","onCreateView");
+		
 		// inflate the fragment
 		View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
@@ -78,6 +81,8 @@ public class ViewDetailFragment extends Fragment
 	@Override
 	public void onResume() 
 	{	
+		Log.d("Assignment2","onResume");
+		
 		super.onResume();
 	
 		if( _isOrientationChanging == false ) 
@@ -91,6 +96,8 @@ public class ViewDetailFragment extends Fragment
 	@Override
 	public void onPause() 
 	{
+		Log.d("Assignment2","onPause");
+		
 		_isOrientationChanging = getActivity().isChangingConfigurations();
 		super.onPause();
 	}
@@ -129,6 +136,28 @@ public class ViewDetailFragment extends Fragment
 				return super.onOptionsItemSelected(item);
 			}
 		}
+	}
+	
+	
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) 
+	{
+		
+		Log.d("Assignment2","onSaveInstanceState");
+		
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) 
+	{
+		
+		Log.d("Assignment2","onActivityCreated");
+		
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
 	}
 
 	private void configureUiObjects(View v) 
@@ -176,6 +205,9 @@ public class ViewDetailFragment extends Fragment
 	
 	private void checkEditMode() 
 	{	
+		
+		Log.d("Assignment2","CheckEditMOde");
+		
 		// if editing, enable the UI objects, otherwise disable
 		if( _isEditMode == true ) {
 			enableEditMode();
@@ -209,6 +241,12 @@ public class ViewDetailFragment extends Fragment
 	
 	private void displayContact() 
 	{	
+		
+		// yup - this is where contact is null when restoring from
+		// recent activities after pause and causing null exception. 
+		// Need to make sure we're getting the contact information 
+		// saved.
+		
 		if( _contact.ID > 0 ) {
 			_fieldName.setText(_contact.Name);
 			_fieldPhone.setText(_contact.Phone);
