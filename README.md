@@ -1,8 +1,10 @@
 CSC492-Assignment2
 ==================
 
-<p>Mobile Development - Program 2</p>
-<p>Authors: Andrew Thompson and Scott Samson</p>
+<p>
+Mobile Development - Program 2<br>
+<i>Authors: Andrew Thompson and Scott Samson</i>
+</p>
 
-Address Book for Android. 
+<b>Address Book for Android.</b><br>
 This project uses fragments, SQLite database mode and an array adapter to create a list of contacts.
