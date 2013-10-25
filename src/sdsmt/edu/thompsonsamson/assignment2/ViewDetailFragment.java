@@ -3,6 +3,7 @@ package sdsmt.edu.thompsonsamson.assignment2;
 import sdsmt.edu.thompsonsamson.assignment2.Model.Contact;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -46,6 +48,7 @@ public class ViewDetailFragment extends Fragment {
 		// assign instances of views from layout resource
 		configureUiObjects(rootView);
 
+		// check if in edit mode or not
 		checkEditMode();
 		
 		return rootView;
@@ -74,7 +77,11 @@ public class ViewDetailFragment extends Fragment {
 				_contact.Address = _fieldAddress.getText().toString();
 				_contact.City = _fieldCity.getText().toString();
 				
-				// do something when button is clicked
+				// hide the soft keyboard if open
+				InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+				inputManager.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+				
+				// if there is a contact id, update it. otherwise add it
 				if(_contact.ID > 0)
 				{
 					_listener.updateContact(_contact);	
@@ -91,7 +98,7 @@ public class ViewDetailFragment extends Fragment {
 	private void checkEditMode() {
 		
 		// if editing, enable the UI objects, otherwise disable
-		if( _isEditMode == true ) {
+		if(  _isEditMode == true ) {
 			enableUiObjects();
 		}
 		else {
@@ -187,7 +194,7 @@ public class ViewDetailFragment extends Fragment {
 
 	private void displayContact() {
 		
-		if( _contact.ID > 0 ) {				
+		if( _contact.ID > 0 ) {
 			_fieldName.setText(_contact.Name);
 			_fieldPhone.setText(_contact.Phone);
 			_fieldEmail.setText(_contact.Email);
@@ -200,6 +207,9 @@ public class ViewDetailFragment extends Fragment {
 			_fieldEmail.setText("");
 			_fieldAddress.setText("");
 			_fieldCity.setText("");
+			
+			_isEditMode = false;
+			enableUiObjects();
 		}
 	}
 }
