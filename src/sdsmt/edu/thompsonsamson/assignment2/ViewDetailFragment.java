@@ -49,9 +49,74 @@ public class ViewDetailFragment extends Fragment {
 		configureUiObjects(rootView);
 
 		// check if in edit mode or not
-		checkEditMode();
+		checkEditMode();      
 		
 		return rootView;
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		
+		// assign listener reference from host activity
+		try {
+			_listener = (IContactControlListener) activity;
+		}
+		catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString());
+		}
+		
+		super.onAttach(activity);
+	}
+
+	@Override
+	public void onResume() {
+		
+		super.onResume();
+	
+		if( _isOrientationChanging == false ) {
+			_contact = _listener.getContact();
+		}
+		
+		displayContact();
+	}
+
+	@Override
+	public void onPause() {
+		_isOrientationChanging = getActivity().isChangingConfigurations();
+		super.onPause();
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		
+		// get the menu resource if there is an actual contact being edited
+		if( _contact.ID > 0 ) {
+			getActivity().getMenuInflater().inflate(R.menu.menu_detail, menu);
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	
+		// switch/case to find out what item was selected
+		switch(item.getItemId())
+		{
+			case R.id.action_menu_edit:
+			{
+				enableEditMode();
+				return true;
+			}
+			case R.id.action_menu_delete:
+			{
+				_listener.deleteContact(_contact);
+				return true;
+			}
+			default:
+			{
+				return super.onOptionsItemSelected(item);
+			}
+		}
+		
 	}
 
 	private void configureUiObjects(View v) {
@@ -78,16 +143,13 @@ public class ViewDetailFragment extends Fragment {
 				_contact.City = _fieldCity.getText().toString();
 				
 				// hide the soft keyboard if open
-				InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-				inputManager.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+				hideKeyboard();				
 				
 				// if there is a contact id, update it. otherwise add it
-				if(_contact.ID > 0)
-				{
+				if(_contact.ID > 0) {
 					_listener.updateContact(_contact);	
 				}
-				else
-				{
+				else {
 					_listener.insertContact(_contact);
 				}
 			}
@@ -95,18 +157,25 @@ public class ViewDetailFragment extends Fragment {
 		});
 	}
 
+	private void hideKeyboard()
+	{
+		InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputManager.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+	}	
+	
 	private void checkEditMode() {
 		
 		// if editing, enable the UI objects, otherwise disable
 		if(  _isEditMode == true ) {
-			enableUiObjects();
+			enableEditMode();
 		}
 		else {
-			disableUiObjects();
+			disableEditMode();
 		}
 	}
 	
-    private void disableUiObjects() {
+    private void disableEditMode() {
+		_isEditMode = false;
 	    _fieldName.setEnabled(false);
 	    _fieldPhone.setEnabled(false);
 	    _fieldEmail.setEnabled(false);
@@ -115,7 +184,8 @@ public class ViewDetailFragment extends Fragment {
         _buttonSave.setVisibility(View.GONE);
     }
 
-    private void enableUiObjects() {
+    private void enableEditMode() {
+		_isEditMode = true;
         _fieldName.setEnabled(true);
         _fieldPhone.setEnabled(true);
         _fieldEmail.setEnabled(true);
@@ -124,74 +194,6 @@ public class ViewDetailFragment extends Fragment {
         _buttonSave.setVisibility(View.VISIBLE);
     }
 	
-	@Override
-	public void onAttach(Activity activity) {
-		
-		// assign listener reference from host activity
-		try
-		{
-			_listener = (IContactControlListener) activity;
-		}
-		catch (ClassCastException e)
-		{
-			throw new ClassCastException(activity.toString());
-		}
-		
-		super.onAttach(activity);
-	}
-
-	@Override
-	public void onResume() {
-		
-		super.onResume();
-
-		if( _isOrientationChanging == false ) {
-			_contact = _listener.getContact();
-		}
-		
-		displayContact();
-	}
-	
-	@Override
-	public void onPause() {
-		_isOrientationChanging = getActivity().isChangingConfigurations();
-		super.onPause();
-	}
-	
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		
-		// get the menu resource if there is an actual contact being edited
-		if( _contact.ID > 0 ) {
-			getActivity().getMenuInflater().inflate(R.menu.menu_detail, menu);
-		}
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		// switch/case to find out what item was selected
-		switch(item.getItemId())
-		{
-			case R.id.action_menu_edit:
-			{
-				_isEditMode = true;
-				enableUiObjects();
-				return true;
-			}
-			case R.id.action_menu_delete:
-			{
-				_listener.deleteContact(_contact);
-				return true;
-			}
-			default:
-			{
-				return super.onOptionsItemSelected(item);
-			}
-		}
-		
-	}
-
 	private void displayContact() {
 		
 		if( _contact.ID > 0 ) {
@@ -208,8 +210,8 @@ public class ViewDetailFragment extends Fragment {
 			_fieldAddress.setText("");
 			_fieldCity.setText("");
 			
-			_isEditMode = false;
-			enableUiObjects();
+			// set edit mode on
+			enableEditMode();
 		}
 	}
 }
