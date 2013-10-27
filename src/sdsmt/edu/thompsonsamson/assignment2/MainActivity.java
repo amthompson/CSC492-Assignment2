@@ -143,5 +143,37 @@ public class MainActivity extends Activity implements IContactControlListener {
 						.addToBackStack(null)
 						.commit();
 	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		_contact = new Contact();
+		_contact.ID = savedInstanceState.getLong("CONTACT_ID");
+		_contact.Name = savedInstanceState.getString("CONTACT_NAME");
+		_contact.Phone = savedInstanceState.getString("CONTACT_PHONE");
+		_contact.Email = savedInstanceState.getString("CONTACT_EMAIL");
+		_contact.Address = savedInstanceState.getString("CONTACT_ADDRESS");
+		_contact.City = savedInstanceState.getString("CONTACT_CITY");
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(outState);
+		
+		if( _contact != null ) 
+		{
+			outState.putLong("CONTACT_ID", _contact.ID);
+			outState.putString("CONTACT_NAME", _contact.Name);
+			outState.putString("CONTACT_PHONE", _contact.Phone);
+			outState.putString("CONTACT_EMAIL", _contact.Email);
+			outState.putString("CONTACT_ADDRESS", _contact.Address);
+			outState.putString("CONTACT_CITY", _contact.City);
+		}
+	}
+	
+	
+	
 	
 }

@@ -1,8 +1,3 @@
-/**
- * 
- * 
- * @author Andrew Thompson & Scott Samson
- */
 package sdsmt.edu.thompsonsamson.assignment2;
 
 import sdsmt.edu.thompsonsamson.assignment2.Model.Contact;
@@ -35,29 +30,28 @@ public class ViewDetailFragment extends Fragment
 	private EditText _fieldAddress;
 	private EditText _fieldCity;
 	private Button _buttonSave;
-	
+		
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-
+		
+		// always turn off edit mode on start
 		_isEditMode = false;
-				
+		
 		setRetainInstance(true);
 		setHasOptionsMenu(true);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
-	{	
-		Log.d("Assignment2","onCreateView");
-		
+	{
 		// inflate the fragment
 		View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
 		// assign instances of views from layout resource
 		configureUiObjects(rootView);
-
+				
 		// check if in edit mode or not
 		checkEditMode();      
 		
@@ -80,24 +74,21 @@ public class ViewDetailFragment extends Fragment
 
 	@Override
 	public void onResume() 
-	{	
-		Log.d("Assignment2","onResume");
+	{
 		
 		super.onResume();
 	
 		if( _isOrientationChanging == false ) 
-		{
+		{	
 			_contact = _listener.getContact();
 		}
-		
+
 		displayContact();
 	}
 
 	@Override
 	public void onPause() 
-	{
-		Log.d("Assignment2","onPause");
-		
+	{		
 		_isOrientationChanging = getActivity().isChangingConfigurations();
 		super.onPause();
 	}
@@ -136,28 +127,6 @@ public class ViewDetailFragment extends Fragment
 				return super.onOptionsItemSelected(item);
 			}
 		}
-	}
-	
-	
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) 
-	{
-		
-		Log.d("Assignment2","onSaveInstanceState");
-		
-		// TODO Auto-generated method stub
-		super.onSaveInstanceState(outState);
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) 
-	{
-		
-		Log.d("Assignment2","onActivityCreated");
-		
-		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
 	}
 
 	private void configureUiObjects(View v) 
@@ -205,7 +174,6 @@ public class ViewDetailFragment extends Fragment
 	
 	private void checkEditMode() 
 	{	
-		
 		Log.d("Assignment2","CheckEditMOde");
 		
 		// if editing, enable the UI objects, otherwise disable
@@ -240,12 +208,8 @@ public class ViewDetailFragment extends Fragment
     }
 	
 	private void displayContact() 
-	{	
-		
-		// yup - this is where contact is null when restoring from
-		// recent activities after pause and causing null exception. 
-		// Need to make sure we're getting the contact information 
-		// saved. Maybe can clean up the enable/disable stuff
+	{
+		Log.d("Assignment2","displayContact");
 		
 		if( _contact.ID > 0 ) {
 			_fieldName.setText(_contact.Name);
