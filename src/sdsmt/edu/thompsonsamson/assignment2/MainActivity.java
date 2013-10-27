@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 
 public class MainActivity extends Activity implements IContactControlListener {
@@ -58,24 +57,19 @@ public class MainActivity extends Activity implements IContactControlListener {
 		_model = Model.getInstance(this);
 		
 		// refresh the list of contacts
-		refreshArrayAdapter();
-		
+		refreshArrayAdapter();		
 	}
 
 	@Override
-	public void selectContact(Contact contact) {
-
-		Log.d("Assignment2","Select Contact: " + contact.Name + "(" + contact.ID + ")");
-		
+	public void selectContact(Contact contact) {		
+	
 		_contact = contact;
 		showDetailFragment();
-		
+	
 	}
 
 	@Override
 	public void updateContact(Contact contact) {
-
-		Log.d("Assignment2","Update Contact: " + contact.Name);
 		
 		_adapter.remove(contact);
 		_adapter.add(contact);
@@ -84,13 +78,11 @@ public class MainActivity extends Activity implements IContactControlListener {
 		
 		_model.updateContact(contact);
 		_fragmentManager.popBackStackImmediate();
-		
+	
 	}
 
 	@Override
 	public void insertContact() {
-
-		Log.d("Assignment2","New Contact");
 		
 		// instantiate a new empty course object
 		_contact = new Contact();
@@ -101,8 +93,6 @@ public class MainActivity extends Activity implements IContactControlListener {
 
 	@Override
 	public void insertContact(Contact contact) {
-
-		Log.d("Assignment2","Insert Contact: " + contact.Name);
 		
 		_adapter.add(contact);
 		_adapter.sort(contact);
@@ -115,8 +105,6 @@ public class MainActivity extends Activity implements IContactControlListener {
 
 	@Override
 	public void deleteContact(Contact contact) {
-
-		Log.d("Assignment2","Delete Contact: " + contact.Name);
 		
 		_adapter.remove(contact);
 		_adapter.sort(contact);
@@ -129,12 +117,9 @@ public class MainActivity extends Activity implements IContactControlListener {
 
 	@Override
 	public Contact getContact() {
-
-		Log.d("Assignment2","Get Contact: " + _contact.Name);
-		
 		return _contact;
 	}
-
+	
 	@Override
 	public ArrayAdapter<Contact> getContactArrayAdapter() {		
 		return _adapter;
