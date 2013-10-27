@@ -1,7 +1,5 @@
 /**
- * 
- * 
- * @author Andrew Thompson & Scott Samson
+ * Project Assignment2 Address Book
  */
 package sdsmt.edu.thompsonsamson.assignment2;
 
@@ -23,6 +21,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+/**
+ * <p>
+ * The View Detail Fragment shows the details of a contact.  Contact information
+ * is saved to a bundle and here. 
+ * <p>
+ * 
+ * @author Andrew Thopmson
+ * @author Scott Samson
+ * Date: 10/27/2013
+ */
 public class ViewDetailFragment extends Fragment 
 {
 	
