@@ -23,8 +23,8 @@ import android.widget.EditText;
 
 /**
  * <p>
- * The View Detail Fragment shows the details of a contact.  Contact information
- * is saved to a bundle and here. 
+ * The View Detail Fragment shows the details of a contact.  Users can edit contact information and
+ * save it with a menu.  Contact information is saved to a bundle and here. 
  * <p>
  * 
  * @author Andrew Thopmson
@@ -46,6 +46,9 @@ public class ViewDetailFragment extends Fragment
 	private EditText _fieldCity;
 	private Button _buttonSave;
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
@@ -57,6 +60,9 @@ public class ViewDetailFragment extends Fragment
 		setHasOptionsMenu(true);
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{	
@@ -74,6 +80,9 @@ public class ViewDetailFragment extends Fragment
 		return rootView;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void onAttach(Activity activity) 
 	{	
@@ -88,6 +97,9 @@ public class ViewDetailFragment extends Fragment
 		super.onAttach(activity);
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void onResume() 
 	{	
@@ -104,6 +116,9 @@ public class ViewDetailFragment extends Fragment
 		displayContact();
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void onPause() 
 	{
@@ -113,6 +128,9 @@ public class ViewDetailFragment extends Fragment
 		super.onPause();
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
 	{
@@ -123,6 +141,9 @@ public class ViewDetailFragment extends Fragment
 		}
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) 
 	{
@@ -150,7 +171,10 @@ public class ViewDetailFragment extends Fragment
 	}
 	
 	
-
+	/**
+	 * 
+	 * @param v
+	 */
 	private void configureUiObjects(View v) 
 	{	
 		// assign the text fields
@@ -164,9 +188,14 @@ public class ViewDetailFragment extends Fragment
 		_buttonSave = (Button) v.findViewById(R.id.buttonSave);
 		_buttonSave.setOnClickListener(new Button.OnClickListener() {
 			
+			/**
+			 * 
+			 * @param v
+			 */
 			@Override
 			public void onClick(View v)
-			{				
+			{	
+				// return if user tried to save empty contact (goes back to edit)
 				if (sendEmptyContactAlert())
 				{
 					return;
@@ -193,12 +222,18 @@ public class ViewDetailFragment extends Fragment
 		});
 	}
 
+	/**
+	 * 
+	 */
 	private void hideKeyboard()
 	{
 		InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputManager.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 	}	
 	
+	/**
+	 * 
+	 */
 	private void checkEditMode() 
 	{	
 		
@@ -213,6 +248,9 @@ public class ViewDetailFragment extends Fragment
 		}
 	}
 	
+	/**
+	 * 
+	 */
     private void disableEditMode() 
     {
 		_isEditMode = false;
@@ -224,6 +262,9 @@ public class ViewDetailFragment extends Fragment
         _buttonSave.setVisibility(View.GONE);
     }
 
+    /**
+     * 
+     */
     private void enableEditMode() 
     {
 		_isEditMode = true;
@@ -235,6 +276,9 @@ public class ViewDetailFragment extends Fragment
         _buttonSave.setVisibility(View.VISIBLE);
     }
 	
+    /**
+     * 
+     */
 	private void displayContact() 
 	{	
 		
@@ -262,11 +306,14 @@ public class ViewDetailFragment extends Fragment
 		}
 	}
 
+	/**
+	 * Saves the contact information to a bundle for later restoration.
+	 * @param outState Bundle to which contact information is stored
+	 */
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		
-
 		// store the key/pair to the bundle
 		outState.putLong("ContactID", _contact.ID);
 		outState.putString("ContactName", _contact.Name);
@@ -274,14 +321,17 @@ public class ViewDetailFragment extends Fragment
 		outState.putString("ContactAddress", _contact.Address);
 		outState.putString("ContactCity", _contact.City);
 	}
-	
+	/**
+	 * Displays an alertDialog to confirm deletion of a contact.  If the user clicks the "OK" button the delete
+	 * proceeds, if not, we return to edit.
+	 */
 	private void sendDeleteContactAlert()
 	{
+		// create and setup alert dialog
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 		alertDialog.setTitle(R.string.fragment_detail_alert_delete_title);
 		alertDialog.setMessage(R.string.fragment_detail_alert_delete_message);
 		alertDialog.setCancelable(true);
-		
 		
 		// listener for confirmation
 		DialogInterface.OnClickListener deleteContactConfirmButtonListener = new DialogInterface.OnClickListener() {						
@@ -291,18 +341,32 @@ public class ViewDetailFragment extends Fragment
 			}
 		};
 		
+		// setup buttons
 		alertDialog.setPositiveButton(R.string.fragment_detail_alert_Ok, deleteContactConfirmButtonListener);
 		alertDialog.setNegativeButton(R.string.fragment_detail_alert_Cancel, null);
+		
+		// create and show alert
 		alertDialog.create();
 		alertDialog.show();
 		
 	}
-	
-	private boolean sendEmptyContactAlert( )
+	/**
+	 * Checks to see if the user is trying to save a contact with no data in any field.  If they are then 
+	 * a warning is displayed.  If not false is returned.
+	 * 
+	 * @return true returns true if warning is displayed
+	 * @return false returns false if warning is not displayed
+	 */
+	private boolean sendEmptyContactAlert()
 	{
-		if (_fieldName.getText().toString().matches("") && _fieldPhone.getText().toString().matches("") && _fieldEmail.getText().toString().matches("") &&
-				_fieldAddress.getText().toString().matches("") && _fieldCity.getText().toString().matches(""))
+		//check if any field has been edited
+		if (_fieldName.getText().toString().matches("") && 
+			_fieldPhone.getText().toString().matches("") &&
+			_fieldEmail.getText().toString().matches("") && 
+			_fieldAddress.getText().toString().matches("") &&
+			_fieldCity.getText().toString().matches(""))
 		{
+			// save it to the bundle if it has
 			Log.d("Assigment2", "sendEmptyContactAlert");
 			AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 			alertDialog.setTitle(R.string.fragment_detail_alert_save_title);
