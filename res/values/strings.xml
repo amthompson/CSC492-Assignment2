@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Address Book</string>
+    <string name="app_name">Thompson/Samson Address Book</string>
     <string name="action_menu_add">Add New Contact</string>
     <string name="action_menu_edit">Edit Contact</string>
     <string name="action_menu_delete">Delete Contact</string>
@@ -12,5 +12,11 @@
     <string name="fragment_detail_hint_address">Enter the street address </string>
     <string name="fragment_detail_hint_city">Enter the city</string>
     <string name="fragment_detail_button_save">Save Contact</string>
+    <string name="fragment_detail_alert_delete_title">Delete Warning</string>
+    <string name="fragment_detail_alert_delete_message">Are you sure you want to delete?</string>
+    <string name="fragment_detail_alert_Ok">OK</string>
+    <string name="fragment_detail_alert_Cancel">Cancel</string>
+    <string name="fragment_detail_alert_save_title">Empty Fields</string>
+    <string name="fragement_detail_alert_save_message">Please enter at least one value</string>
 
 </resources>
