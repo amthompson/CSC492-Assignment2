@@ -33,35 +33,39 @@ import android.widget.EditText;
  */
 public class ViewDetailFragment extends Fragment 
 {
-	
-	private IContactControlListener _listener;
-	private Contact _contact = null;
-    private boolean _isOrientationChanging = false;
-    private boolean _isEditMode;
+	private IContactControlListener _listener;		// host activity listener
+	private Contact _contact = null;				// current contact
+    private boolean _isOrientationChanging = false;	// orientation change flag
+    private boolean _isEditMode;					// edit mode flag
 		
-	private EditText _fieldName;
-	private EditText _fieldPhone;
-	private EditText _fieldEmail;
-	private EditText _fieldAddress;
-	private EditText _fieldCity;
-	private Button _buttonSave;
-	
+	private EditText _fieldName;	// field for entering contact name
+	private EditText _fieldPhone;	// field for entering contact phone number
+	private EditText _fieldEmail;	// field for entering contact email address
+	private EditText _fieldAddress;	// field for entering contact street address
+	private EditText _fieldCity;	// field for entering contact city/state
+	private Button _buttonSave;		// save contact button
+
 	/**
-	 * 
+	 * @author Andrew Thompson
+	 * @author Scott Samson
+	 * Creates the ViewDetailFragment activity
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		
+
+		// always turn off edit mode on start
 		_isEditMode = false;
-				
+		
 		setRetainInstance(true);
 		setHasOptionsMenu(true);
 	}
 
 	/**
-	 * 
+	 * @author Andrew Thompson
+	 * @author Scott Samson
+	 * Creates and returns the view associated with the fragment
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
@@ -81,7 +85,9 @@ public class ViewDetailFragment extends Fragment
 	}
 
 	/**
-	 * 
+	 * @author Andrew Thompson
+	 * @author Scott Samson
+	 * Attaches the fragment view to host activity
 	 */
 	@Override
 	public void onAttach(Activity activity) 
@@ -98,43 +104,45 @@ public class ViewDetailFragment extends Fragment
 	}
 
 	/**
-	 * 
+	 * @author Andrew Thompson
+	 * @author Scott Samson
+	 * Resumes the fragment view
 	 */
 	@Override
 	public void onResume() 
 	{	
-		Log.d("Assignment2","onResume");
-		
 		super.onResume();
 	
+		// if not rotating device, get the contact from host activity
 		if( _isOrientationChanging == false ) 
 		{
 			_contact = _listener.getContact();
 		}
-		
-						
+
+		// display the current contact info
 		displayContact();
 	}
 
 	/**
-	 * 
+	 * @author Andrew Thompson
+	 * @author Scott Samson
+	 * When pause happens, get the orientation change flag
 	 */
 	@Override
 	public void onPause() 
 	{
-		Log.d("Assignment2","onPause");
-		
 		_isOrientationChanging = getActivity().isChangingConfigurations();
 		super.onPause();
 	}
 
 	/**
-	 * 
+	 * @author Andrew Thompson
+	 * @author Scott Samson
+	 * If the contact isn't new, inflate the detail menu resource item
 	 */
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
 	{
-		// get the menu resource if there is an actual contact being edited
 		if( _contact.ID > 0 ) 
 		{
 			getActivity().getMenuInflater().inflate(R.menu.menu_detail, menu);
@@ -142,7 +150,9 @@ public class ViewDetailFragment extends Fragment
 	}
 
 	/**
-	 * 
+	 * @author Andrew Thompson
+	 * @author Scott Samson
+	 * Controls the action of the menu - edit or delete
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) 
@@ -159,8 +169,8 @@ public class ViewDetailFragment extends Fragment
 			{
 				
 				// add the confirmation message
-				
 				sendDeleteContactAlert();
+				_listener.deleteContact(_contact);
 				return true;
 			}
 			default:
@@ -172,8 +182,11 @@ public class ViewDetailFragment extends Fragment
 	
 	
 	/**
-	 * 
-	 * @param v
+	 * @author Andrew Thompson
+	 * Sets up the GUI items. These include finding the EditText resources and
+	 * creating the save button. Also an anonymous inner class is used for the
+	 * button click listener.
+	 * @param v the current view
 	 */
 	private void configureUiObjects(View v) 
 	{	
@@ -223,22 +236,23 @@ public class ViewDetailFragment extends Fragment
 	}
 
 	/**
-	 * 
+	 * @author Andrew Thompson
+	 * Hides the keyboard if open. This is done if they keyboard isn't closed
+	 * before hitting save button.
 	 */
 	private void hideKeyboard()
 	{
 		InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputManager.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-	}	
+	}
 	
 	/**
-	 * 
+	 * @author Andrew Thompson
+	 * Checks the edit mode to enable or disable the GUI objects. This affects
+	 * the EditText fields and the save contact button.
 	 */
 	private void checkEditMode() 
 	{	
-		
-		Log.d("Assignment2","CheckEditMOde");
-		
 		// if editing, enable the UI objects, otherwise disable
 		if( _isEditMode == true ) {
 			enableEditMode();
@@ -249,7 +263,8 @@ public class ViewDetailFragment extends Fragment
 	}
 	
 	/**
-	 * 
+	 * @author Andrew Thompson
+	 * Disables the EditText fields and hides the save button
 	 */
     private void disableEditMode() 
     {
@@ -263,7 +278,8 @@ public class ViewDetailFragment extends Fragment
     }
 
     /**
-     * 
+	 * @author Andrew Thompson
+	 * Enables the EditText fields and shows the save button
      */
     private void enableEditMode() 
     {
@@ -277,15 +293,13 @@ public class ViewDetailFragment extends Fragment
     }
 	
     /**
-     * 
+	 * @author Andrew Thompson
+     * Fill the EditText fields with the current contact information. If the
+     * contact is new, enable edit mode also.
      */
 	private void displayContact() 
-	{	
-		
-		// yup - this is where contact is null when restoring from
-		// recent activities after pause and causing null exception. 
-		// Need to make sure we're getting the contact information 
-		// saved. Maybe can clean up the enable/disable stuff
+	{
+		Log.d("Assignment2","displayContact");
 		
 		if( _contact.ID > 0 ) {
 			_fieldName.setText(_contact.Name);
@@ -307,21 +321,7 @@ public class ViewDetailFragment extends Fragment
 	}
 
 	/**
-	 * Saves the contact information to a bundle for later restoration.
-	 * @param outState Bundle to which contact information is stored
-	 */
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		
-		// store the key/pair to the bundle
-		outState.putLong("ContactID", _contact.ID);
-		outState.putString("ContactName", _contact.Name);
-		outState.putString("ContactPhone", _contact.Phone);
-		outState.putString("ContactAddress", _contact.Address);
-		outState.putString("ContactCity", _contact.City);
-	}
-	/**
+	 * @author Scott Samson
 	 * Displays an alertDialog to confirm deletion of a contact.  If the user clicks the "OK" button the delete
 	 * proceeds, if not, we return to edit.
 	 */
@@ -350,7 +350,9 @@ public class ViewDetailFragment extends Fragment
 		alertDialog.show();
 		
 	}
+	
 	/**
+	 * @author Scott Samson
 	 * Checks to see if the user is trying to save a contact with no data in any field.  If they are then 
 	 * a warning is displayed.  If not false is returned.
 	 * 
@@ -378,7 +380,7 @@ public class ViewDetailFragment extends Fragment
 			
 			return true;
 		}
+		
 		return false;
 	}
-	
 }

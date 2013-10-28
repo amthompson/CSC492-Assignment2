@@ -1,6 +1,6 @@
 /**
-* Project Assignment2 Address Book
-**/
+* Project Assignment2 Address Book - Detail Fragment
+*/
 package sdsmt.edu.thompsonsamson.assignment2;
 
 import sdsmt.edu.thompsonsamson.assignment2.Model.Contact;
@@ -15,22 +15,19 @@ import android.view.View;
 import android.widget.ListView;
 
 /**
- * <p>
+ * @author Andrew Thompson
+ * @author Scott Samson
  * The ViewListFragment class shows the list of contacts for the user to see.  It has a menu
  * bar to enable adding and deleting a contact.  A detail view can be displayed for displaying 
  * and editing contact information.
- * <p>
- * <a href="https://github.com/amthompson/CSC492-Assignment2">GitHub Repository</a>
- * 
- * @author Andrew Thompson
- * @author Scott Samson
- * Date 10/27/2013
  */
 public class ViewListFragment extends ListFragment {
 
 	private IContactControlListener _listener;
 	
 	/**
+	 * @author Andrew Thopmson
+	 * @author Scott Samson
 	 * creates activity and sets initial values
 	 */
 	@Override
@@ -42,6 +39,8 @@ public class ViewListFragment extends ListFragment {
 	}
 
 	/**
+	 * @author Andrew Thopmson
+	 * @author Scott Samson
 	 * Creates the toolbar menu with application name and add contact option from resources.
 	 * @param menu list of items in toolbar menu
 	 * @param inflater object to add and place menu items
@@ -57,6 +56,8 @@ public class ViewListFragment extends ListFragment {
 	}
 
 	/**
+	 * @author Andrew Thopmson
+	 * @author Scott Samson
 	 * Attaches to fragment to the main activity 
 	 * @param activity the activity to be attached to, should be parent
 	 */
@@ -78,6 +79,8 @@ public class ViewListFragment extends ListFragment {
 	}
 
 	/**
+	 * @author Andrew Thopmson
+	 * @author Scott Samson
 	 * Resumes the fragment and refreshes the contact list
 	 */
 	@Override
@@ -90,6 +93,8 @@ public class ViewListFragment extends ListFragment {
 	}
 
 	/**
+	 * @author Andrew Thopmson
+	 * @author Scott Samson
 	 * Handles menu item selections.
 	 * @param item The item the user selected
 	 */
@@ -112,6 +117,8 @@ public class ViewListFragment extends ListFragment {
 	}
 
 	/**
+	 * @author Andrew Thopmson
+	 * @author Scott Samson
 	 * Calls the select contact method based on user a user click.
 	 * @param l	The listview where the click happened
 	 * @param v The view that was clicked within the list view
@@ -123,19 +130,19 @@ public class ViewListFragment extends ListFragment {
 		
 		// get list adapter and call the listener select contact
 		Contact contact = null;
-		
-		// create a blank contact
 		contact = (Contact) getListAdapter().getItem(position);
 
 		// load clicked contact provided it is not null
-		if(contact != null)
-		{			
+		if(contact != null) 
+		{
 			_listener.selectContact(contact);
 		}
 		
 	}
 
 	/**
+	 * @author Andrew Thopmson
+	 * @author Scott Samson
 	 * Refreshes the contact list with the contact array adapter
 	 */
 	private void refreshContactList()
